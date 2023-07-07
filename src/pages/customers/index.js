@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -21,6 +21,12 @@ import TabManageCustomers from 'src/views/customers/TabManageCustomers'
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
 
+// ** Reducer Imports
+import { getAllCustomersRequest } from '../../store/reducers/customerReducer'
+
+import { useDispatch, useSelector } from 'react-redux'
+import { unwrapResult } from '@reduxjs/toolkit'
+
 const Tab = styled(MuiTab)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     minWidth: 100
@@ -40,12 +46,43 @@ const TabName = styled('span')(({ theme }) => ({
 }))
 
 const Customers = () => {
+  // ** Redux States
+  const { allCustomers } = useSelector(state => state.customers)
+
   // ** State
   const [value, setValue] = useState('all-customers')
+  const [customersDataLocal, setCustomersDataLocal] = useState(null)
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+
+  const dispatch = useDispatch()
+
+  const getAllCustomers = () => {
+    try {
+      dispatch(getAllCustomersRequest())
+        .then(unwrapResult)
+        .then(res => {
+          console.log('Response at getOrdersByCategoryIdRequest', res)
+        })
+        .catch(err => {
+          console.log('Error at getOrdersByCategoryIdRequest', err)
+        })
+    } catch (err) {
+      console.log('Error at getData', err)
+    }
+  }
+
+  useEffect(() => {
+    getAllCustomers()
+  }, [])
+
+  useEffect(() => {
+    if (allCustomers) {
+      setCustomersDataLocal(allCustomers)
+    }
+  }, [allCustomers])
 
   return (
     <Card>
@@ -76,7 +113,7 @@ const Customers = () => {
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='all-customers'>
-          <TabAllCustomers />
+          <TabAllCustomers customers={customersDataLocal} />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='manage-customers'>
           <TabManageCustomers />
