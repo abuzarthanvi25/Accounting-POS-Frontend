@@ -3,6 +3,13 @@ import Login from 'mdi-material-ui/Login'
 import HomeOutline from 'mdi-material-ui/HomeOutline'
 import FormatLetterCase from 'mdi-material-ui/FormatLetterCase'
 import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
+import CashRegiser from 'mdi-material-ui/CashRegister'
+import AccountGroup from 'mdi-material-ui/AccountGroup'
+import Warehouse from 'mdi-material-ui/Warehouse'
+import AppsBox from 'mdi-material-ui/AppsBox'
+import TruckDelivery from 'mdi-material-ui/TruckDelivery'
+import Cart from 'mdi-material-ui/Cart'
+import Sales from 'mdi-material-ui/TagMultiple'
 
 const navigation = () => {
   return [
@@ -21,43 +28,38 @@ const navigation = () => {
     },
     {
       title: 'Point Of Sale',
-      icon: Login,
-      path: '/pages/login'
+      icon: CashRegiser,
+      path: '/point-of-sales'
     },
     {
       title: 'Customers',
-      icon: Login,
+      icon: AccountGroup,
       path: '/customers'
     },
     {
       title: 'Inventory',
-      icon: Login,
+      icon: Warehouse,
       path: '/inventory'
     },
     {
       title: 'Products',
-      icon: Login,
+      icon: AppsBox,
       path: '/products'
     },
     {
       title: 'Suppliers',
-      icon: Login,
-      path: '/pages/login'
+      icon: TruckDelivery,
+      path: '/suppliers'
     },
     {
       title: 'Orders',
-      icon: Login,
-      path: '/pages/login'
+      icon: Cart,
+      path: '/orders'
     },
     {
-      title: 'Invoices',
-      icon: Login,
-      path: '/pages/login'
-    },
-    {
-      title: 'Sales',
-      icon: Login,
-      path: '/pages/login'
+      title: 'Sales and Invoices',
+      icon: Sales,
+      path: '/sales-and-invoices'
     },
     {
       sectionTitle: 'Accounting Cycle'
