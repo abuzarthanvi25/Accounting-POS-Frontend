@@ -10,6 +10,9 @@ import AppsBox from 'mdi-material-ui/AppsBox'
 import TruckDelivery from 'mdi-material-ui/TruckDelivery'
 import Cart from 'mdi-material-ui/Cart'
 import Sales from 'mdi-material-ui/TagMultiple'
+import Book from 'mdi-material-ui/Book'
+import CurrencyUsd from 'mdi-material-ui/FileDocument'
+import Finance from 'mdi-material-ui/Finance'
 
 const navigation = () => {
   return [
@@ -66,17 +69,17 @@ const navigation = () => {
     },
     {
       title: 'Ledger Posting',
-      icon: FormatLetterCase,
+      icon: Book,
       path: '/typography'
     },
     {
       title: 'Financial Statements',
-      icon: FormatLetterCase,
+      icon: CurrencyUsd,
       path: '/typography'
     },
     {
       title: 'Financial Elements',
-      icon: FormatLetterCase,
+      icon: Finance,
       path: '/typography'
     }
   ]
