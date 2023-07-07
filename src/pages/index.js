@@ -28,7 +28,7 @@ const Dashboard = () => {
         <Grid item xs={12} md={6} lg={6}>
           <WeeklyOverview />
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid item xs={12} md={6} lg={6}>
           <Grid container spacing={6}>
             <Grid item xs={6}>
               <CardStatisticsVerticalComponent
