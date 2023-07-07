@@ -11,7 +11,7 @@ import TruckDelivery from 'mdi-material-ui/TruckDelivery'
 import Cart from 'mdi-material-ui/Cart'
 import Sales from 'mdi-material-ui/TagMultiple'
 import Book from 'mdi-material-ui/Book'
-import CurrencyUsd from 'mdi-material-ui/FileDocument'
+import FileChart from 'mdi-material-ui/FileChart'
 import Finance from 'mdi-material-ui/Finance'
 
 const navigation = () => {
@@ -68,19 +68,19 @@ const navigation = () => {
       sectionTitle: 'Accounting Cycle'
     },
     {
-      title: 'Ledger Posting',
+      title: 'Ledger Accounts',
       icon: Book,
-      path: '/typography'
+      path: '/ledger-accounts'
     },
     {
       title: 'Financial Statements',
-      icon: CurrencyUsd,
-      path: '/typography'
+      icon: FileChart,
+      path: '/financial-statements'
     },
     {
       title: 'Financial Elements',
       icon: Finance,
-      path: '/typography'
+      path: '/financial-elements'
     }
   ]
 }
