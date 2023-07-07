@@ -32,12 +32,12 @@ const navigation = () => {
     {
       title: 'Inventory',
       icon: Login,
-      path: '/pages/login'
+      path: '/inventory'
     },
     {
       title: 'Products',
       icon: Login,
-      path: '/pages/login'
+      path: '/products'
     },
     {
       title: 'Suppliers',

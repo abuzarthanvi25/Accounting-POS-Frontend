@@ -39,9 +39,9 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-const Customers = () => {
+const Inventory = () => {
   // ** State
-  const [value, setValue] = useState('all-customers')
+  const [value, setValue] = useState('all-inventory')
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -56,26 +56,17 @@ const Customers = () => {
           sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value='all-customers'
+            value='all-inventory'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <AccountOutline />
-                <TabName>All Customers</TabName>
-              </Box>
-            }
-          />
-          <Tab
-            value='manage-customers'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <LockOpenOutline />
-                <TabName>Manage Customers</TabName>
+                <TabName>All Inventory</TabName>
               </Box>
             }
           />
         </TabList>
 
-        <TabPanel sx={{ p: 0 }} value='all-customers'>
+        <TabPanel sx={{ p: 0 }} value='all-inventory'>
           <TabAllCustomers />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='manage-customers'>
@@ -86,4 +77,4 @@ const Customers = () => {
   )
 }
 
-export default Customers
+export default Inventory
