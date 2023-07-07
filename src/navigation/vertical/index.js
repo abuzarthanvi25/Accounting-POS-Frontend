@@ -1,14 +1,18 @@
 // ** Icon imports
 import Login from 'mdi-material-ui/Login'
-import Table from 'mdi-material-ui/Table'
-import CubeOutline from 'mdi-material-ui/CubeOutline'
 import HomeOutline from 'mdi-material-ui/HomeOutline'
 import FormatLetterCase from 'mdi-material-ui/FormatLetterCase'
 import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
-import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
-import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
-import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
-import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
+import CashRegiser from 'mdi-material-ui/CashRegister'
+import AccountGroup from 'mdi-material-ui/AccountGroup'
+import Warehouse from 'mdi-material-ui/Warehouse'
+import AppsBox from 'mdi-material-ui/AppsBox'
+import TruckDelivery from 'mdi-material-ui/TruckDelivery'
+import Cart from 'mdi-material-ui/Cart'
+import Sales from 'mdi-material-ui/TagMultiple'
+import Book from 'mdi-material-ui/Book'
+import FileChart from 'mdi-material-ui/FileChart'
+import Finance from 'mdi-material-ui/Finance'
 
 const navigation = () => {
   return [
@@ -23,53 +27,60 @@ const navigation = () => {
       path: '/account-settings'
     },
     {
-      sectionTitle: 'Pages'
+      sectionTitle: 'Point Of Sale System'
     },
     {
-      title: 'Login',
-      icon: Login,
-      path: '/pages/login',
-      openInNewTab: true
+      title: 'Point Of Sale',
+      icon: CashRegiser,
+      path: '/point-of-sales'
     },
     {
-      title: 'Register',
-      icon: AccountPlusOutline,
-      path: '/pages/register',
-      openInNewTab: true
+      title: 'Customers',
+      icon: AccountGroup,
+      path: '/customers'
     },
     {
-      title: 'Error',
-      icon: AlertCircleOutline,
-      path: '/pages/error',
-      openInNewTab: true
+      title: 'Inventory',
+      icon: Warehouse,
+      path: '/inventory'
     },
     {
-      sectionTitle: 'User Interface'
+      title: 'Products',
+      icon: AppsBox,
+      path: '/products'
     },
     {
-      title: 'Typography',
-      icon: FormatLetterCase,
-      path: '/typography'
+      title: 'Suppliers',
+      icon: TruckDelivery,
+      path: '/suppliers'
     },
     {
-      title: 'Icons',
-      path: '/icons',
-      icon: GoogleCirclesExtended
+      title: 'Orders',
+      icon: Cart,
+      path: '/orders'
     },
     {
-      title: 'Cards',
-      icon: CreditCardOutline,
-      path: '/cards'
+      title: 'Sales and Invoices',
+      icon: Sales,
+      path: '/sales-and-invoices'
     },
     {
-      title: 'Tables',
-      icon: Table,
-      path: '/tables'
+      sectionTitle: 'Accounting Cycle'
     },
     {
-      icon: CubeOutline,
-      title: 'Form Layouts',
-      path: '/form-layouts'
+      title: 'Ledger Accounts',
+      icon: Book,
+      path: '/ledger-accounts'
+    },
+    {
+      title: 'Financial Statements',
+      icon: FileChart,
+      path: '/financial-statements'
+    },
+    {
+      title: 'Financial Elements',
+      icon: Finance,
+      path: '/financial-elements'
     }
   ]
 }
