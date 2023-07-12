@@ -42,6 +42,17 @@ const TabAddOrder = ({
   const [searchQuery, setSearchQuery] = useState('')
   const [customerName, setCustomerName] = useState('')
 
+  const handleIncrementDisable = productId => {
+    if (productId) {
+      const product = rows.find(val => val.product_id == productId)
+      if (product && product.quantityInStock == 0) {
+        return true
+      } else {
+        return false
+      }
+    }
+  }
+
   return (
     <>
       <CardContent style={{ opacity: isCustomer ? '1' : '0.8', pointerEvents: isCustomer ? 'all' : 'none' }}>
@@ -108,17 +119,18 @@ const TabAddOrder = ({
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'space-between',
-                            margin: '10px 0px 10px 0px',
+                            margin: '0px 0px 10px 0px',
                             backgroundColor: '#ECECEC',
                             borderRadius: '10px'
                           }}
                           key={index}
                         >
-                          <PinOutline style={{ fontSize: '15px', padding: '0px' }} />
+                          <PinOutline style={{ fontSize: '18px', padding: '0px' }} />
                           <Typography style={{ fontWeight: 'bold' }}>{product.productName}</Typography>
                           <Box style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
                             <Button
                               onClick={() => handleIncrementAndDecrement(product.product_id, 'increment')}
+                              disabled={handleIncrementDisable(product.product_id)}
                               variant='contained'
                               color='secondary'
                             >
