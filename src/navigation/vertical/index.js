@@ -10,7 +10,8 @@ import AppsBox from 'mdi-material-ui/AppsBox'
 import TruckDelivery from 'mdi-material-ui/TruckDelivery'
 import Cart from 'mdi-material-ui/Cart'
 import Sales from 'mdi-material-ui/TagMultiple'
-import Book from 'mdi-material-ui/Book'
+import BookAccount from 'mdi-material-ui/BookAccount'
+import BookEdit from 'mdi-material-ui/BookEdit'
 import FileChart from 'mdi-material-ui/FileChart'
 import Finance from 'mdi-material-ui/Finance'
 
@@ -68,8 +69,13 @@ const navigation = () => {
       sectionTitle: 'Accounting Cycle'
     },
     {
+      title: 'Journal Entries',
+      icon: BookEdit,
+      path: '/journal-entries'
+    },
+    {
       title: 'Ledger Accounts',
-      icon: Book,
+      icon: BookAccount,
       path: '/ledger-accounts'
     },
     {

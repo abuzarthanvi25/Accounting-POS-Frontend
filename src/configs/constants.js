@@ -1,5 +1,7 @@
 const CONSTANT = {
-  customers: '/customer'
+  customers: '/customer',
+  inventory: '/inventory',
+  addCustomer: '/customer'
 }
 
 export default CONSTANT
