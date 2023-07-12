@@ -221,6 +221,10 @@ const PointOfSales = () => {
       : []
   }
 
+  const handleConfirmOrder = () => {
+    console.log(orderPayload)
+  }
+
   return (
     <Card>
       <TabContext value={value}>
@@ -258,6 +262,7 @@ const PointOfSales = () => {
             handleAddCustomer={handleAddCustomer}
             customer={customerLocal}
             isCustomer={orderPayload.customer_id}
+            handleConfirmOrder={handleConfirmOrder}
             rows={returnRows()}
             columns={[
               {

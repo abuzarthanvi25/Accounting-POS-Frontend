@@ -28,7 +28,8 @@ const TabAddOrder = ({
   handleSearch,
   handleAddCustomer,
   isCustomer,
-  customer
+  customer,
+  handleConfirmOrder
 }) => {
   // ** State
 
@@ -199,7 +200,13 @@ const TabAddOrder = ({
                 </CardContent>
               </Grid>
               <Grid style={{ marginTop: '20px' }} item xs={12}>
-                <Button disabled={getTotalPayable() == 0} variant='contained' color='success' sx={{ marginRight: 3.5 }}>
+                <Button
+                  onClick={handleConfirmOrder}
+                  disabled={getTotalPayable() == 0}
+                  variant='contained'
+                  color='success'
+                  sx={{ marginRight: 3.5 }}
+                >
                   Confirm Order
                 </Button>
                 <Button
