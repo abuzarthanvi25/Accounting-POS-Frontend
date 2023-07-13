@@ -53,15 +53,19 @@ const Row = ({ row, columns, nestedColumns, nestedColumnHeading, nestedRowKey })
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row[nestedRowKey].map((historyRow, index) => (
-                    <TableRow key={index}>
-                      {nestedColumns.map(column => (
-                        <TableCell key={column.key} component='th' scope='row'>
-                          {historyRow[column.key]}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
+                  {row[nestedRowKey] && row[nestedRowKey].length > 0 ? (
+                    row[nestedRowKey].map((historyRow, index) => (
+                      <TableRow key={index}>
+                        {nestedColumns.map(column => (
+                          <TableCell key={column.key} component='th' scope='row'>
+                            {historyRow[column.key]}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <Box style={{ display: 'flex', justifyContent: 'center' }}>No {nestedColumnHeading}</Box>
+                  )}
                 </TableBody>
               </Table>
             </Box>
