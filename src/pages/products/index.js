@@ -17,6 +17,7 @@ import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 // ** Demo Tabs Imports
 import TabAllMarketplaceProducts from 'src/views/products/TabAllProducts'
 import TabManageCustomers from 'src/views/customers/TabManageCustomers'
+import TabBuyProducts from 'src/views/products/TabBuyProducts'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
@@ -91,7 +92,7 @@ const Products = () => {
           <TabManageCustomers />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='buy-products'>
-          <TabManageCustomers />
+          <TabBuyProducts />
         </TabPanel>
       </TabContext>
     </Card>

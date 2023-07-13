@@ -20,6 +20,14 @@ export const getAllProductsInInventoryRequest = createAsyncThunk(
   }
 )
 
+export const addProductsToInventoryRequest = createAsyncThunk(
+  'InventoryReducer/addProductsToInventoryRequest',
+  async (payload, thunkApi) => {
+    const response = await InventoryApiServices.addProductsToInventory(payload, thunkApi)
+    return response
+  }
+)
+
 const InventoryReducer = createReducer(initialState, {
   [getAllProductsInInventoryRequest.pending]: state => {
     return {
@@ -39,6 +47,30 @@ const InventoryReducer = createReducer(initialState, {
   },
 
   [getAllProductsInInventoryRequest.rejected]: (state, action) => {
+    return {
+      ...state,
+      error: action.payload?.response?.data,
+      loading: loadingStates.idle
+    }
+  },
+
+  [addProductsToInventoryRequest.pending]: state => {
+    return {
+      ...state,
+      error: null,
+      loading: loadingStates.pending
+    }
+  },
+
+  [addProductsToInventoryRequest.fulfilled]: (state, action) => {
+    return {
+      ...state,
+      error: null,
+      loading: loadingStates.idle
+    }
+  },
+
+  [addProductsToInventoryRequest.rejected]: (state, action) => {
     return {
       ...state,
       error: action.payload?.response?.data,
