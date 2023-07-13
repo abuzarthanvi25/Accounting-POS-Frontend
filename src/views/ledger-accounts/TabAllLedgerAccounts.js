@@ -117,7 +117,7 @@ const LedgerTable = ({ accountEntries }) => {
 
     const balance = debitSum - creditSum
 
-    return `${balance > 0 ? balance : Math.abs(balance)} ${balance > 0 ? 'DR' : 'CR'}`
+    return `$ ${balance > 0 ? balance : Math.abs(balance)} ${balance > 0 ? 'DR' : 'CR'}`
   }
 
   return (
