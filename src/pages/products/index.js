@@ -69,7 +69,16 @@ const Products = () => {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <LockOpenOutline />
-                <TabName>Manage Products</TabName>
+                <TabName>Add a Product</TabName>
+              </Box>
+            }
+          />
+          <Tab
+            value='buy-products'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <LockOpenOutline />
+                <TabName>Buy Products From Marketplace</TabName>
               </Box>
             }
           />
@@ -79,6 +88,9 @@ const Products = () => {
           <TabAllMarketplaceProducts />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='manage-products'>
+          <TabManageCustomers />
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value='buy-products'>
           <TabManageCustomers />
         </TabPanel>
       </TabContext>

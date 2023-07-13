@@ -8,7 +8,7 @@ import AccountGroup from 'mdi-material-ui/AccountGroup'
 import Warehouse from 'mdi-material-ui/Warehouse'
 import AppsBox from 'mdi-material-ui/AppsBox'
 import TruckDelivery from 'mdi-material-ui/TruckDelivery'
-import Cart from 'mdi-material-ui/Cart'
+import Capital from 'mdi-material-ui/CashSync'
 import Sales from 'mdi-material-ui/TagMultiple'
 import BookAccount from 'mdi-material-ui/BookAccount'
 import BookEdit from 'mdi-material-ui/BookEdit'
@@ -18,6 +18,9 @@ import Finance from 'mdi-material-ui/Finance'
 const navigation = () => {
   return [
     {
+      sectionTitle: 'Admin'
+    },
+    {
       title: 'Dashboard',
       icon: HomeOutline,
       path: '/'
@@ -26,6 +29,14 @@ const navigation = () => {
       title: 'Account Settings',
       icon: AccountCogOutline,
       path: '/account-settings'
+    },
+    {
+      sectionTitle: "Owner's Equity"
+    },
+    {
+      title: 'Manage Capital',
+      icon: Capital,
+      path: '/owners-equity'
     },
     {
       sectionTitle: 'Point Of Sale System'
@@ -64,7 +75,7 @@ const navigation = () => {
       sectionTitle: 'Accounting Cycle'
     },
     {
-      title: 'Journal Entries',
+      title: 'General Journal',
       icon: BookEdit,
       path: '/journal-entries'
     },

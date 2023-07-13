@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -15,8 +15,14 @@ import AccountOutline from 'mdi-material-ui/AccountOutline'
 import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 
 // ** Demo Tabs Imports
-import TabAllCustomers from 'src/views/customers/TabAllCustomers'
-import TabManageCustomers from 'src/views/customers/TabManageCustomers'
+import TabAllSales from 'src/views/sales-and-invoices/TabAllSales'
+import TabAllInvoices from 'src/views/sales-and-invoices/TabAllInvoices'
+
+import { getAllSalesRequest } from '../../store/reducers/salesReducer'
+import { getAllInvoicesRequest } from '../../store/reducers/InvoiceReducer'
+
+import { useDispatch, useSelector } from 'react-redux'
+import { unwrapResult } from '@reduxjs/toolkit'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
@@ -39,13 +45,68 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-const Products = () => {
+const SalesAndInvoices = () => {
+  // ** Redux States
+  const { allSales } = useSelector(state => state.sales)
+  const { allInvoices } = useSelector(state => state.invoices)
+
   // ** State
-  const [value, setValue] = useState('all-customers')
+  const [value, setValue] = useState('all-sales')
+  const [salesDataLocal, setSalesDataLocal] = useState(null)
+  const [invoiceDataLocal, setInvoiceDataLocal] = useState(null)
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+
+  const dispatch = useDispatch()
+
+  const getAllSales = () => {
+    try {
+      dispatch(getAllSalesRequest())
+        .then(unwrapResult)
+        .then(res => {
+          console.log('Response at getAllSales', res)
+        })
+        .catch(err => {
+          console.log('Error at getAllSales', err)
+        })
+    } catch (err) {
+      console.log('Error at getData', err)
+    }
+  }
+
+  const getAllInvoices = () => {
+    try {
+      dispatch(getAllInvoicesRequest())
+        .then(unwrapResult)
+        .then(res => {
+          console.log('Response at getAllSales', res)
+        })
+        .catch(err => {
+          console.log('Error at getAllSales', err)
+        })
+    } catch (err) {
+      console.log('Error at getData', err)
+    }
+  }
+
+  useEffect(() => {
+    getAllSales()
+    getAllInvoices()
+  }, [])
+
+  useEffect(() => {
+    if (allSales) {
+      setSalesDataLocal(allSales)
+    }
+  }, [allSales])
+
+  useEffect(() => {
+    if (allInvoices) {
+      setInvoiceDataLocal(allInvoices)
+    }
+  }, [allInvoices])
 
   return (
     <Card>
@@ -56,7 +117,7 @@ const Products = () => {
           sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value='all-customers'
+            value='all-sales'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <AccountOutline />
@@ -75,15 +136,15 @@ const Products = () => {
           />
         </TabList>
 
-        <TabPanel sx={{ p: 0 }} value='all-customers'>
-          <TabAllCustomers />
+        <TabPanel sx={{ p: 0 }} value='all-sales'>
+          <TabAllSales sales={salesDataLocal} />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='manage-customers'>
-          <TabManageCustomers />
+          <TabAllInvoices invoices={invoiceDataLocal} />
         </TabPanel>
       </TabContext>
     </Card>
   )
 }
 
-export default Products
+export default SalesAndInvoices
