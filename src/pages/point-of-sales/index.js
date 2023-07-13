@@ -25,6 +25,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 // ** Reducer Imports
 import { getAllProductsInInventoryRequest } from '../../store/reducers/inventoryReducer'
 import { addACustomerRequest } from '../../store/reducers/customerReducer'
+import { addAnOrderRequest } from '../../store/reducers/ordersReducer'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { unwrapResult } from '@reduxjs/toolkit'
@@ -64,6 +65,7 @@ const PointOfSales = () => {
   const dispatch = useDispatch()
   const { productsInInventory } = useSelector(state => state.inventory)
   const { customer } = useSelector(state => state.customers)
+  const [loading, setLoading] = useState(false)
 
   const getAllProductsInInventory = () => {
     try {
@@ -228,7 +230,27 @@ const PointOfSales = () => {
   }
 
   const handleConfirmOrder = () => {
-    console.log(orderPayload)
+    try {
+      if (orderPayload.customer_id && orderPayload.order_items.length > 0) {
+        setLoading(true)
+        dispatch(addAnOrderRequest(orderPayload))
+          .then(unwrapResult)
+          .then(res => {
+            setOrderPayload({ customer_id: 1, order_items: [] })
+            getAllProductsInInventory()
+            handleAddCustomer('Cash Customer')
+            setLoading(false)
+            console.log('Response at getOrdersByCategoryIdRequest', res)
+          })
+          .catch(err => {
+            setLoading(false)
+            console.log('Error at getOrdersByCategoryIdRequest', err)
+          })
+      }
+    } catch (error) {
+      setLoading(false)
+      console.log('Error at handleConfirmOrder', error)
+    }
   }
 
   return (

@@ -12,13 +12,15 @@ let initialState = {
   loading: loadingStates.idle
 }
 
-export const getAllOrdersRequest = createAsyncThunk(
-  'InventoryReducer/getAllOrdersRequest',
-  async (payload, thunkApi) => {
-    const response = await OrderApiServices.getAllOrders(payload, thunkApi)
-    return response
-  }
-)
+export const getAllOrdersRequest = createAsyncThunk('OrdersReducer/getAllOrdersRequest', async (payload, thunkApi) => {
+  const response = await OrderApiServices.getAllOrders(payload, thunkApi)
+  return response
+})
+
+export const addAnOrderRequest = createAsyncThunk('OrdersReducer/addAnOrderRequest', async (payload, thunkApi) => {
+  const response = await OrderApiServices.addAnOrder(payload, thunkApi)
+  return response
+})
 
 const OrdersReducer = createReducer(initialState, {
   [getAllOrdersRequest.pending]: state => {
@@ -39,6 +41,30 @@ const OrdersReducer = createReducer(initialState, {
   },
 
   [getAllOrdersRequest.rejected]: (state, action) => {
+    return {
+      ...state,
+      error: action.payload?.response?.data,
+      loading: loadingStates.idle
+    }
+  },
+
+  [addAnOrderRequest.pending]: state => {
+    return {
+      ...state,
+      error: null,
+      loading: loadingStates.pending
+    }
+  },
+
+  [addAnOrderRequest.fulfilled]: (state, action) => {
+    return {
+      ...state,
+      error: null,
+      loading: loadingStates.idle
+    }
+  },
+
+  [addAnOrderRequest.rejected]: (state, action) => {
     return {
       ...state,
       error: action.payload?.response?.data,
