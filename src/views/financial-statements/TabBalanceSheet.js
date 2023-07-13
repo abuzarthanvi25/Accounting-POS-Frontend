@@ -94,6 +94,61 @@ const TabBalanceSheet = () => {
     }
   }
 
+  const handleBalance = accountEntries => {
+    const allDebitEntries = accountEntries.filter(val => val.transaction_type_id == 1)
+    const allCreditEntries = accountEntries.filter(val => val.transaction_type_id == 2)
+
+    const debitSum = allDebitEntries.reduce((accumulator, entry) => {
+      return accumulator + entry.amount
+    }, 0)
+
+    const creditSum = allCreditEntries.reduce((accumulator, entry) => {
+      return accumulator + entry.amount
+    }, 0)
+
+    const balance = debitSum - creditSum
+
+    return { balance, status: balance > 0 ? 1 : 2 }
+  }
+
+  const formatLedger = () => {
+    if (allBalanceSheetEntries && allBalanceSheetEntries.length > 0) {
+      const ledgerObject = allBalanceSheetEntries.reduce((acc, entry) => {
+        const { account_title } = entry
+        if (!acc[account_title]) {
+          acc[account_title] = []
+        }
+        acc[account_title].push(entry)
+        return acc
+      }, {})
+
+      return ledgerObject
+    } else {
+      return {}
+    }
+  }
+
+  const singularize = () => {
+    const a = []
+    const l = []
+    const c = []
+    Object.keys(formatLedger()).map(key => {
+      const obj = { ...formatLedger()[key][0], amount: Math.abs(handleBalance(formatLedger()[key]).balance) }
+      if (obj.financial_element_type_id == 1) {
+        a.push(obj)
+      } else if (obj.financial_element_type_id == 3) {
+        l.push(obj)
+      } else if (obj.financial_element_type_id == 5) {
+        c.push(obj)
+      }
+    })
+    return {
+      Assets: a,
+      Capital: c,
+      Liabilities: l
+    }
+  }
+
   return (
     <CardContent>
       <form>
@@ -126,8 +181,8 @@ const TabBalanceSheet = () => {
                   <Typography style={{ borderBottom: '4px solid #202020', margin: '10px 0px' }} variant='h4'>
                     Assets
                   </Typography>
-                  {rebuildData()?.Assets && rebuildData()?.Assets.length > 0 ? (
-                    rebuildData()?.Assets.map((asset, index) => {
+                  {singularize()?.Assets && singularize()?.Assets.length > 0 ? (
+                    singularize()?.Assets.map((asset, index) => {
                       return (
                         <Box
                           style={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}
@@ -149,7 +204,7 @@ const TabBalanceSheet = () => {
                       </Typography>
                     </Box>
                   )}
-                  {rebuildData()?.Assets ? (
+                  {singularize()?.Assets ? (
                     <Box
                       style={{
                         display: 'flex',
@@ -164,7 +219,7 @@ const TabBalanceSheet = () => {
                         Total Current Assets
                       </Typography>
                       <Typography variant='body3' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                        $ {handleSum(rebuildData()?.Assets)}
+                        $ {handleSum(singularize()?.Assets)}
                       </Typography>
                     </Box>
                   ) : null}
@@ -176,8 +231,8 @@ const TabBalanceSheet = () => {
                   <Typography style={{ borderBottom: '4px solid #202020', margin: '10px 0px' }} variant='h4'>
                     Liabilities
                   </Typography>
-                  {rebuildData()?.Liabilities && rebuildData()?.Liabilities.length > 0 ? (
-                    rebuildData()?.Liabilities.map((asset, index) => {
+                  {singularize()?.Liabilities && singularize()?.Liabilities.length > 0 ? (
+                    singularize()?.Liabilities.map((asset, index) => {
                       return (
                         <Box
                           style={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}
@@ -199,7 +254,7 @@ const TabBalanceSheet = () => {
                       </Typography>
                     </Box>
                   )}
-                  {rebuildData()?.Liabilities ? (
+                  {singularize()?.Liabilities ? (
                     <Box
                       style={{
                         display: 'flex',
@@ -214,7 +269,7 @@ const TabBalanceSheet = () => {
                         Total Current Liabilities
                       </Typography>
                       <Typography variant='body3' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                        $ {handleSum(rebuildData()?.Liabilities)}
+                        $ {handleSum(singularize()?.Liabilities)}
                       </Typography>
                     </Box>
                   ) : null}
@@ -227,8 +282,8 @@ const TabBalanceSheet = () => {
                   >
                     Capital
                   </Typography>
-                  {rebuildData()?.Capital && rebuildData()?.Capital.length > 0 ? (
-                    rebuildData()?.Capital.map((asset, index) => {
+                  {singularize()?.Capital && singularize()?.Capital.length > 0 ? (
+                    singularize()?.Capital.map((asset, index) => {
                       return (
                         <Box
                           style={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}
@@ -250,7 +305,7 @@ const TabBalanceSheet = () => {
                       </Typography>
                     </Box>
                   )}
-                  {rebuildData()?.Capital ? (
+                  {singularize()?.Capital ? (
                     <Box
                       style={{
                         display: 'flex',
@@ -265,7 +320,7 @@ const TabBalanceSheet = () => {
                         Total Current Capital
                       </Typography>
                       <Typography variant='body3' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                        $ {handleSum(rebuildData().Capital)}
+                        $ {handleSum(singularize().Capital)}
                       </Typography>
                     </Box>
                   ) : null}
