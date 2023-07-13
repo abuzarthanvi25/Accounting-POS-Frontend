@@ -15,7 +15,7 @@ import AccountOutline from 'mdi-material-ui/AccountOutline'
 import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 
 // ** Demo Tabs Imports
-import TabAllCustomers from 'src/views/customers/TabAllCustomers'
+import TabAllMarketplaceProducts from 'src/views/products/TabAllProducts'
 import TabManageCustomers from 'src/views/customers/TabManageCustomers'
 
 // ** Third Party Styles Imports
@@ -41,7 +41,7 @@ const TabName = styled('span')(({ theme }) => ({
 
 const Products = () => {
   // ** State
-  const [value, setValue] = useState('all-customers')
+  const [value, setValue] = useState('all-products')
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -56,7 +56,7 @@ const Products = () => {
           sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value='all-customers'
+            value='all-products'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <AccountOutline />
@@ -65,7 +65,7 @@ const Products = () => {
             }
           />
           <Tab
-            value='manage-customers'
+            value='manage-products'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <LockOpenOutline />
@@ -75,10 +75,10 @@ const Products = () => {
           />
         </TabList>
 
-        <TabPanel sx={{ p: 0 }} value='all-customers'>
-          <TabAllCustomers />
+        <TabPanel sx={{ p: 0 }} value='all-products'>
+          <TabAllMarketplaceProducts />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='manage-customers'>
+        <TabPanel sx={{ p: 0 }} value='manage-products'>
           <TabManageCustomers />
         </TabPanel>
       </TabContext>

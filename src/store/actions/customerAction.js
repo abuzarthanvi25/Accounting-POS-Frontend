@@ -10,6 +10,16 @@ async function getAllCustomers(payload, thunkAPI) {
   }
 }
 
+async function addACustomer(payload, thunkAPI) {
+  try {
+    const response = await ApiResource.post(ApiConstants.addCustomer, payload)
+    return response
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error)
+  }
+}
+
 export const CustomerApiServices = {
-  getAllCustomers
+  getAllCustomers,
+  addACustomer
 }

@@ -12,11 +12,9 @@ import MuiTab from '@mui/material/Tab'
 
 // ** Icons Imports
 import AccountOutline from 'mdi-material-ui/AccountOutline'
-import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 
 // ** Demo Tabs Imports
-import TabAllCustomers from 'src/views/customers/TabAllCustomers'
-import TabManageCustomers from 'src/views/customers/TabManageCustomers'
+import TabAllInventory from 'src/views/inventory/AllInventory'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
@@ -67,10 +65,7 @@ const Inventory = () => {
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='all-inventory'>
-          <TabAllCustomers />
-        </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='manage-customers'>
-          <TabManageCustomers />
+          <TabAllInventory />
         </TabPanel>
       </TabContext>
     </Card>

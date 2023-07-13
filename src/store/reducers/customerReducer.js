@@ -20,6 +20,14 @@ export const getAllCustomersRequest = createAsyncThunk(
   }
 )
 
+export const addACustomerRequest = createAsyncThunk(
+  'CustomerReducer/addACustomerRequest',
+  async (payload, thunkApi) => {
+    const response = await CustomerApiServices.addACustomer(payload, thunkApi)
+    return response
+  }
+)
+
 const CustomerReducer = createReducer(initialState, {
   [getAllCustomersRequest.pending]: state => {
     return {
@@ -39,6 +47,30 @@ const CustomerReducer = createReducer(initialState, {
   },
 
   [getAllCustomersRequest.rejected]: (state, action) => {
+    return {
+      ...state,
+      error: action.payload?.response?.data,
+      loading: loadingStates.idle
+    }
+  },
+  [addACustomerRequest.pending]: state => {
+    return {
+      ...state,
+      error: null,
+      loading: loadingStates.pending
+    }
+  },
+
+  [addACustomerRequest.fulfilled]: (state, action) => {
+    return {
+      ...state,
+      error: null,
+      loading: loadingStates.idle,
+      customer: action.payload.data?.data
+    }
+  },
+
+  [addACustomerRequest.rejected]: (state, action) => {
     return {
       ...state,
       error: action.payload?.response?.data,

@@ -60,16 +60,7 @@ const Products = () => {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <AccountOutline />
-                <TabName>All Orders</TabName>
-              </Box>
-            }
-          />
-          <Tab
-            value='manage-customers'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <LockOpenOutline />
-                <TabName>Manage Orders</TabName>
+                <TabName>All Ledger Accounts</TabName>
               </Box>
             }
           />
