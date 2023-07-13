@@ -12,7 +12,9 @@ const CONSTANT = {
   incomeStatement: '/income-summary/journal',
   balanceSheet: '/balance-sheet/journal',
   ownersEquity: '/owners-equity/journal',
-  journalEntryByDate: '/date/journal'
+  journalEntryByDate: '/date/journal',
+  elementTypes: '/elem-types',
+  transactionTypes: '/transaction-types'
 }
 
 export default CONSTANT

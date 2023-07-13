@@ -11,6 +11,8 @@ let initialState = {
   allBalanceSheetEntries: null,
   allIncomeStatementEntries: null,
   allOwnersEquityEntries: null,
+  financialElemTypes: null,
+  transactionTypes: null,
   error: null,
   loading: loadingStates.idle
 }
@@ -19,6 +21,22 @@ export const getAllJournalEntriesRequest = createAsyncThunk(
   'JournalReducer/getAllJournalEntriesRequest',
   async (payload, thunkApi) => {
     const response = await JournalApiServices.getAllJournalEntries(payload, thunkApi)
+    return response
+  }
+)
+
+export const getAllElemTypeRequest = createAsyncThunk(
+  'JournalReducer/getAllElemTypeRequest',
+  async (payload, thunkApi) => {
+    const response = await JournalApiServices.getAllFinancialElementType(payload, thunkApi)
+    return response
+  }
+)
+
+export const getAllTransactionTypesRequest = createAsyncThunk(
+  'JournalReducer/getAllTransactionTypes',
+  async (payload, thunkApi) => {
+    const response = await JournalApiServices.getAllTransactionTypes(payload, thunkApi)
     return response
   }
 )
@@ -74,6 +92,56 @@ const JournalReducer = createReducer(initialState, {
   },
 
   [getAllJournalEntriesRequest.rejected]: (state, action) => {
+    return {
+      ...state,
+      error: action.payload?.response?.data,
+      loading: loadingStates.idle
+    }
+  },
+
+  [getAllElemTypeRequest.pending]: state => {
+    return {
+      ...state,
+      error: null,
+      loading: loadingStates.pending
+    }
+  },
+
+  [getAllElemTypeRequest.fulfilled]: (state, action) => {
+    return {
+      ...state,
+      error: null,
+      loading: loadingStates.idle,
+      financialElemTypes: action.payload.data?.data
+    }
+  },
+
+  [getAllElemTypeRequest.rejected]: (state, action) => {
+    return {
+      ...state,
+      error: action.payload?.response?.data,
+      loading: loadingStates.idle
+    }
+  },
+
+  [getAllTransactionTypesRequest.pending]: state => {
+    return {
+      ...state,
+      error: null,
+      loading: loadingStates.pending
+    }
+  },
+
+  [getAllTransactionTypesRequest.fulfilled]: (state, action) => {
+    return {
+      ...state,
+      error: null,
+      loading: loadingStates.idle,
+      transactionTypes: action.payload.data?.data
+    }
+  },
+
+  [getAllTransactionTypesRequest.rejected]: (state, action) => {
     return {
       ...state,
       error: action.payload?.response?.data,

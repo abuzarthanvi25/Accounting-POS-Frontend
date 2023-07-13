@@ -10,6 +10,24 @@ async function getAllJournalEntries(payload, thunkAPI) {
   }
 }
 
+async function getAllFinancialElementType(payload, thunkAPI) {
+  try {
+    const response = await ApiResource.get(ApiConstants.elementTypes)
+    return response
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error)
+  }
+}
+
+async function getAllTransactionTypes(payload, thunkAPI) {
+  try {
+    const response = await ApiResource.get(ApiConstants.transactionTypes)
+    return response
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error)
+  }
+}
+
 async function getBalanceSheet(payload, thunkAPI) {
   try {
     const { date_of_transaction } = payload
@@ -75,5 +93,7 @@ export const JournalApiServices = {
   addAJournalEntry,
   getBalanceSheet,
   getIncomeStatement,
-  getStatmentOfOwnersEquity
+  getStatmentOfOwnersEquity,
+  getAllFinancialElementType,
+  getAllTransactionTypes
 }
