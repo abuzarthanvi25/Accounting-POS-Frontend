@@ -75,6 +75,11 @@ const navigation = () => {
       sectionTitle: 'Accounting Cycle'
     },
     {
+      title: 'General Journal',
+      icon: BookEdit,
+      path: '/journal-entries'
+    },
+    {
       title: 'Ledger Accounts',
       icon: BookAccount,
       path: '/ledger-accounts'
