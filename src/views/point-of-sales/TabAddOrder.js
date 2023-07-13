@@ -10,6 +10,8 @@ import TableCustom from 'src/custom-components/TableCustom'
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 import { Typography } from '@mui/material'
+import Badge from '@mui/material/Badge'
+import Avatar from '@mui/material/Avatar'
 
 // ** Icons Imports
 import Cross from 'mdi-material-ui/Cancel'
@@ -64,8 +66,17 @@ const TabAddOrder = ({
           }}
         >
           <Grid container spacing={7}>
-            <Grid item md={12}>
-              <Typography variant={'h4'}>{customer?.customer_name}'s Order</Typography>
+            <Grid style={{ display: 'flex', justifyContent: 'space-between' }} item md={12}>
+              <Box style={{ display: 'flex', alignItems: 'center' }}>
+                <Badge overlap='circular' anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+                  <Avatar
+                    alt='John Doe'
+                    src='/images/avatars/1.png'
+                    sx={{ width: '2.5rem', height: '2.5rem', margin: '0px 10px 0px 10px' }}
+                  />
+                </Badge>
+                <Typography variant={'h4'}>{customer?.customer_name}'s Order</Typography>
+              </Box>
             </Grid>
             <Grid item md={6} xs={12} sm={12}>
               <Grid style={{ display: 'flex', alignItems: 'center', maxWidth: '100%' }} item md={8} xs={12} sm={4}>

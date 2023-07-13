@@ -41,24 +41,19 @@ const navigation = () => {
       path: '/customers'
     },
     {
+      title: 'MarketPlace',
+      icon: AppsBox,
+      path: '/products'
+    },
+    {
       title: 'Inventory',
       icon: Warehouse,
       path: '/inventory'
     },
     {
-      title: 'Products',
-      icon: AppsBox,
-      path: '/products'
-    },
-    {
       title: 'Suppliers',
       icon: TruckDelivery,
       path: '/suppliers'
-    },
-    {
-      title: 'Orders',
-      icon: Cart,
-      path: '/orders'
     },
     {
       title: 'Sales and Invoices',

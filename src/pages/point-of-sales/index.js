@@ -13,9 +13,10 @@ import Button from '@mui/material/Button'
 
 // ** Icons Imports
 import AccountOutline from 'mdi-material-ui/AccountOutline'
+import Cart from 'mdi-material-ui/Cart'
 
 // ** Demo Tabs Imports
-import TabAllCustomers from 'src/views/customers/TabAllCustomers'
+import TabAllOrders from 'src/views/point-of-sales/TabAllOrders'
 import TabAddOrder from 'src/views/point-of-sales/TabAddOrder'
 
 // ** Third Party Styles Imports
@@ -175,11 +176,16 @@ const PointOfSales = () => {
 
   const handleSearch = searchQuery => {
     let copyArr = [...productsInInventoryLocal]
+    let filteredArr = []
 
     if (searchQuery && copyArr.length > 0) {
-      const filteredArr = copyArr.filter(product =>
-        product.Product.product_name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      if (typeof searchQuery == 'number') {
+        filteredArr = copyArr.filter(product => product.Product.id === searchQuery)
+      } else {
+        filteredArr = copyArr.filter(product =>
+          product.Product.product_name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      }
       setProductsInInventoryLocal([...filteredArr])
     } else {
       getAllProductsInInventory()
@@ -204,7 +210,7 @@ const PointOfSales = () => {
       ? productsInInventoryLocal.map(val => ({
           productName: val?.Product?.product_name,
           unitPrice: val?.Product?.unit_price,
-          quantityInStock: val?.quantity_in_stock - handleQuantity(val?.Product?.id),
+          quantityInStock: `${val?.quantity_in_stock - handleQuantity(val?.Product?.id)}/${val?.quantity_in_stock}`,
           product_id: val?.Product?.id,
           action: () => (
             <Button
@@ -246,7 +252,7 @@ const PointOfSales = () => {
             value='view-all-orders'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <AccountOutline />
+                <Cart />
                 <TabName>View All Orders</TabName>
               </Box>
             }
@@ -271,7 +277,7 @@ const PointOfSales = () => {
               },
               {
                 id: 'unitPrice',
-                label: 'Unit Price'
+                label: 'Unit Price ($)'
               },
               {
                 id: 'quantityInStock',
@@ -285,7 +291,7 @@ const PointOfSales = () => {
           />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='view-all-orders'>
-          <TabAllCustomers />
+          <TabAllOrders unwrapResult={unwrapResult} dispatch={dispatch} />
         </TabPanel>
       </TabContext>
     </Card>
