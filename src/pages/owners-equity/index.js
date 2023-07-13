@@ -15,8 +15,7 @@ import AccountOutline from 'mdi-material-ui/AccountOutline'
 import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 
 // ** Demo Tabs Imports
-import TabAllCustomers from 'src/views/customers/TabAllCustomers'
-import TabManageCustomers from 'src/views/customers/TabManageCustomers'
+import TabAddEntries from 'src/views/owners-equity/TabAddEntries'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
@@ -39,7 +38,7 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-const Products = () => {
+const OwnersEquity = () => {
   // ** State
   const [value, setValue] = useState('balance-sheet')
 
@@ -60,42 +59,18 @@ const Products = () => {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <AccountOutline />
-                <TabName>Balance Sheet</TabName>
-              </Box>
-            }
-          />
-          <Tab
-            value='income-statement'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <AccountOutline />
-                <TabName>Income Statement</TabName>
-              </Box>
-            }
-          />
-          <Tab
-            value='statement-of-owners-equity'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <AccountOutline />
-                <TabName>Statement Of Owner's Equit</TabName>
+                <TabName>Manage Owner's Equity</TabName>
               </Box>
             }
           />
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='balance-sheet'>
-          <TabAllCustomers />
-        </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='income-statement'>
-          <TabManageCustomers />
-        </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='statement-of-owners-equity'>
-          <TabManageCustomers />
+          <TabAddEntries />
         </TabPanel>
       </TabContext>
     </Card>
   )
 }
 
-export default Products
+export default OwnersEquity
