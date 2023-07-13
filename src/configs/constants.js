@@ -5,7 +5,9 @@ const CONSTANT = {
   orders: '/orders',
   marketplace: '/marketplace/products',
   addToMarketplace: '/products',
-  suppliers: '/suppliers'
+  suppliers: '/suppliers',
+  sales: '/sales',
+  orders: '/orders'
 }
 
 export default CONSTANT
