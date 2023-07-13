@@ -78,7 +78,7 @@ const Products = () => {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <AccountOutline />
-                <TabName>Statement Of Owner's Equit</TabName>
+                <TabName>Statement Of Owner's Equity</TabName>
               </Box>
             }
           />
