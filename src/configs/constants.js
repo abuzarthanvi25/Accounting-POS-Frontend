@@ -7,7 +7,12 @@ const CONSTANT = {
   addToMarketplace: '/products',
   suppliers: '/suppliers',
   sales: '/sales',
-  orders: '/orders'
+  orders: '/orders',
+  journal: '/journal',
+  incomeStatement: '/income-summary/journal',
+  balanceSheet: '/balance-sheet/journal',
+  ownersEquity: '/owners-equity/journal',
+  journalEntryByDate: '/date/journal'
 }
 
 export default CONSTANT

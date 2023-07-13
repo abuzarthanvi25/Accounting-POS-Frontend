@@ -18,6 +18,8 @@ import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
 
+import { showSuccessToast } from '../../configs/appToast'
+
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 
@@ -148,7 +150,7 @@ const TabAccount = () => {
           ) : null}
 
           <Grid item xs={12}>
-            <Button variant='contained' sx={{ marginRight: 3.5 }}>
+            <Button onClick={() => showSuccessToast('aaa')} variant='contained' sx={{ marginRight: 3.5 }}>
               Save Changes
             </Button>
             <Button type='reset' variant='outlined' color='secondary'>
