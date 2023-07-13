@@ -3,6 +3,7 @@ import CustomerReducer from './customerReducer'
 import InventoryReducer from './inventoryReducer'
 import OrdersReducer from './ordersReducer'
 import MarketplaceReducer from './marketplaceReducer'
+import SupplierReducer from './supplierReducer'
 
 // Concatenate all reducers
 
@@ -10,5 +11,6 @@ export const rootReducer = combineReducers({
   customers: CustomerReducer,
   inventory: InventoryReducer,
   orders: OrdersReducer,
-  marketplace: MarketplaceReducer
+  marketplace: MarketplaceReducer,
+  suppliers: SupplierReducer
 })

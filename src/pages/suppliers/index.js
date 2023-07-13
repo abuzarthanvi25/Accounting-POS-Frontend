@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -12,14 +12,18 @@ import MuiTab from '@mui/material/Tab'
 
 // ** Icons Imports
 import AccountOutline from 'mdi-material-ui/AccountOutline'
-import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 
 // ** Demo Tabs Imports
-import TabAllCustomers from 'src/views/customers/TabAllCustomers'
-import TabManageCustomers from 'src/views/customers/TabManageCustomers'
+import TabAllSuppliers from 'src/views/suppliers/TabAllSuppliers'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
+
+// ** Reducer Imports
+import { getAllSuppliersRequest } from '../../store/reducers/supplierReducer'
+
+import { useDispatch, useSelector } from 'react-redux'
+import { unwrapResult } from '@reduxjs/toolkit'
 
 const Tab = styled(MuiTab)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -39,13 +43,44 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-const Products = () => {
+const Customers = () => {
+  // ** Redux States
+  const { allSuppliers } = useSelector(state => state.suppliers)
+
   // ** State
-  const [value, setValue] = useState('all-customers')
+  const [value, setValue] = useState('all-suppliers')
+  const [supplierDataLocal, setSupplierDataLocal] = useState(null)
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+
+  const dispatch = useDispatch()
+
+  const getAllSuppliers = () => {
+    try {
+      dispatch(getAllSuppliersRequest())
+        .then(unwrapResult)
+        .then(res => {
+          console.log('Response at getAllSuppliers', res)
+        })
+        .catch(err => {
+          console.log('Error at getAllSuppliers', err)
+        })
+    } catch (err) {
+      console.log('Error at getAllSuppliers', err)
+    }
+  }
+
+  useEffect(() => {
+    getAllSuppliers()
+  }, [])
+
+  useEffect(() => {
+    if (allSuppliers) {
+      setSupplierDataLocal(allSuppliers)
+    }
+  }, [allSuppliers])
 
   return (
     <Card>
@@ -56,7 +91,7 @@ const Products = () => {
           sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value='all-customers'
+            value='all-suppliers'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <AccountOutline />
@@ -64,26 +99,14 @@ const Products = () => {
               </Box>
             }
           />
-          <Tab
-            value='manage-customers'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <LockOpenOutline />
-                <TabName>Manage Suppliers</TabName>
-              </Box>
-            }
-          />
         </TabList>
 
-        <TabPanel sx={{ p: 0 }} value='all-customers'>
-          <TabAllCustomers />
-        </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='manage-customers'>
-          <TabManageCustomers />
+        <TabPanel sx={{ p: 0 }} value='all-suppliers'>
+          <TabAllSuppliers suppliers={supplierDataLocal} />
         </TabPanel>
       </TabContext>
     </Card>
   )
 }
 
-export default Products
+export default Customers
