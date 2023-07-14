@@ -30,6 +30,8 @@ import { addAnOrderRequest } from '../../store/reducers/ordersReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { unwrapResult } from '@reduxjs/toolkit'
 
+import { showToast } from '../../custom-components/Toast'
+
 const Tab = styled(MuiTab)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     minWidth: 100
@@ -88,13 +90,16 @@ const PointOfSales = () => {
         dispatch(addACustomerRequest({ customer_name: customerName }))
           .then(unwrapResult)
           .then(res => {
+            showToast(res?.data?.message)
             console.log('Response at handleAddCustomer', res)
           })
           .catch(err => {
+            showToast('Error adding customer', 'error')
             console.log('Error at handleAddCustomer', err)
           })
       }
     } catch (err) {
+      showToast('Error adding customer', 'error')
       console.log('Error at handleAddCustomer', err)
     }
   }
@@ -122,12 +127,7 @@ const PointOfSales = () => {
     }
   }, [customerLocal])
 
-  useEffect(() => {
-    console.log(orderPayload.order_items)
-  }, [orderPayload])
-
   const handleAddToOrder = product => {
-    console.log(product)
     const productIndex = orderPayload.order_items.findIndex(val => val.product_id == product.id)
     if (productIndex !== -1) {
       orderPayload.order_items[productIndex] = {
@@ -238,16 +238,19 @@ const PointOfSales = () => {
           .then(res => {
             setOrderPayload({ customer_id: 1, order_items: [] })
             getAllProductsInInventory()
+            showToast(res?.data?.message)
             handleAddCustomer('Cash Customer')
             setLoading(false)
-            console.log('Response at getOrdersByCategoryIdRequest', res)
+            console.log('Response at handleConfirmOrder', res)
           })
           .catch(err => {
+            showToast(err?.data?.message ?? 'Error adding order', 'error')
             setLoading(false)
-            console.log('Error at getOrdersByCategoryIdRequest', err)
+            console.log('Error at handleConfirmOrder', err)
           })
       }
     } catch (error) {
+      showToast(err?.message ?? 'Error adding order', 'error')
       setLoading(false)
       console.log('Error at handleConfirmOrder', error)
     }
@@ -291,6 +294,7 @@ const PointOfSales = () => {
             customer={customerLocal}
             isCustomer={orderPayload.customer_id}
             handleConfirmOrder={handleConfirmOrder}
+            loading={loading}
             rows={returnRows()}
             columns={[
               {

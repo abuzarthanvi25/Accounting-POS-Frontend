@@ -31,7 +31,8 @@ const TabAddOrder = ({
   handleAddCustomer,
   isCustomer,
   customer,
-  handleConfirmOrder
+  handleConfirmOrder,
+  loading
 }) => {
   // ** State
 
@@ -213,7 +214,7 @@ const TabAddOrder = ({
               <Grid style={{ marginTop: '20px' }} item xs={12}>
                 <Button
                   onClick={handleConfirmOrder}
-                  disabled={getTotalPayable() == 0}
+                  disabled={getTotalPayable() == 0 || loading}
                   variant='contained'
                   color='success'
                   sx={{ marginRight: 3.5 }}
