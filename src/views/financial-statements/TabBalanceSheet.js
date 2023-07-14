@@ -16,6 +16,8 @@ import { getBalanceSheetRequest } from '../../store/reducers/journalReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { unwrapResult } from '@reduxjs/toolkit'
 
+import { showToast } from '../../custom-components/Toast'
+
 const TabBalanceSheet = () => {
   // ** Redux States
   const { allBalanceSheetEntries } = useSelector(state => state.journal)
@@ -38,10 +40,12 @@ const TabBalanceSheet = () => {
         dispatch(getBalanceSheetRequest({ date_of_transaction: model.date_of_transaction }))
           .then(unwrapResult)
           .then(res => {
+            showToast('Balance Sheet generated successfully')
             setLoading(false)
             console.log('Response at balanceSheetDataLocal', res)
           })
           .catch(err => {
+            showToast('Error generating balance sheet', 'error')
             setLoading(false)
             console.log('Error at balanceSheetDataLocal', err)
           })

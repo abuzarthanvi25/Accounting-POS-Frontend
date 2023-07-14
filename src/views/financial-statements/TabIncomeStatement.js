@@ -17,6 +17,8 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 
+import { showToast } from '../../custom-components/Toast'
+
 // ** Reducer Imports
 import { getIncomeStatementRequest } from '../../store/reducers/journalReducer'
 
@@ -48,17 +50,19 @@ const TabIncomeStatement = () => {
         dispatch(getIncomeStatementRequest({ date_of_transaction: model.date_of_transaction }))
           .then(unwrapResult)
           .then(res => {
+            showToast('Income statement generated successfully')
             setLoading(false)
-            console.log('Response at balanceSheetDataLocal', res)
+            console.log('Response at incomeStatement', res)
           })
           .catch(err => {
+            showToast('Error generating income statement', 'error')
             setLoading(false)
-            console.log('Error at balanceSheetDataLocal', err)
+            console.log('Error at incomeStatement', err)
           })
       }
     } catch (err) {
       setLoading(false)
-      console.log('Error at balanceSheetDataLocal', err)
+      console.log('Error at incomeStatement', err)
     }
   }
 

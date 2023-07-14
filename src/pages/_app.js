@@ -32,6 +32,7 @@ import { Provider } from 'react-redux'
 
 // ** Import Store Instance
 import configureStores from '../store/index'
+import Toast from 'src/custom-components/Toast'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -68,7 +69,16 @@ const App = props => {
         <SettingsProvider>
           <SettingsConsumer>
             {({ settings }) => {
-              return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
+              return (
+                <ThemeComponent settings={settings}>
+                  {getLayout(
+                    <>
+                      <Component {...pageProps} />
+                      <Toast />
+                    </>
+                  )}
+                </ThemeComponent>
+              )
             }}
           </SettingsConsumer>
         </SettingsProvider>

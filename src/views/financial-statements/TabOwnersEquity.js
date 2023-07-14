@@ -15,6 +15,7 @@ import { getStatementOfOwnersEquityRequest } from '../../store/reducers/journalR
 
 import { useDispatch, useSelector } from 'react-redux'
 import { unwrapResult } from '@reduxjs/toolkit'
+import { showToast } from '../../custom-components/Toast'
 
 const TabIncomeStatement = () => {
   // ** Redux States
@@ -38,10 +39,12 @@ const TabIncomeStatement = () => {
         dispatch(getStatementOfOwnersEquityRequest({ date_of_transaction: model.date_of_transaction }))
           .then(unwrapResult)
           .then(res => {
+            showToast("Statement of owner's Equity generated successfully")
             setLoading(false)
             console.log('Response at balanceSheetDataLocal', res)
           })
           .catch(err => {
+            showToast("Error generating statement of owner's quity", 'error')
             setLoading(false)
             console.log('Error at balanceSheetDataLocal', err)
           })
