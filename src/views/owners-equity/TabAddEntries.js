@@ -15,8 +15,9 @@ import AppConstants from '../../configs/appConstants'
 import moment from 'moment'
 import InputAdornment from '@mui/material/InputAdornment'
 import { getAllJournalEntriesRequest, addJournalEntryRequest } from '../../store/reducers/journalReducer'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { unwrapResult } from '@reduxjs/toolkit'
+import { showToast } from '../../custom-components/Toast'
 
 // ** Icons Imports
 import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
@@ -26,7 +27,7 @@ const TabAddEntries = () => {
   const [error, setError] = useState(false)
   const [model, setModel] = useState({
     date_of_transaction: moment(new Date()).format(AppConstants.dateFormat),
-    amount: null
+    amount: ''
   })
   const [loading, setLoading] = useState(false)
 
@@ -44,6 +45,7 @@ const TabAddEntries = () => {
         })
         .catch(err => {
           setLoading(false)
+          showToast('Error Adding journal entries for the investment', 'error')
           console.log('Error at addJournalEntry', err)
         })
     } catch (err) {
@@ -87,6 +89,8 @@ const TabAddEntries = () => {
               transaction_type_id: 2,
               account_title: 'Capital'
             })
+            showToast(`$ ${model.amount} invested in Point Of Sale business successfully`)
+            setModel({ ...model, amount: '', date_of_transaction: null })
           }
         }}
       >
@@ -102,6 +106,7 @@ const TabAddEntries = () => {
                   </InputAdornment>
                 )
               }}
+              value={model.amount}
               onChange={e => setModel({ ...model, amount: e.target.value })}
               type='number'
               fullWidth
