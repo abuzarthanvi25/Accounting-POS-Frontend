@@ -18,6 +18,8 @@ import { addProductsToInventoryRequest } from '../../store/reducers/inventoryRed
 import { useDispatch, useSelector } from 'react-redux'
 import { unwrapResult } from '@reduxjs/toolkit'
 
+import { showToast } from '../../custom-components/Toast'
+
 import Cross from 'mdi-material-ui/Cancel'
 import USD from 'mdi-material-ui/CurrencyUsd'
 import PinOutline from 'mdi-material-ui/PinOutline'
@@ -183,15 +185,18 @@ const TabBuyProducts = () => {
           .then(res => {
             setOrderPayload({ products_bought: [] })
             getAllMarketplaceProducts()
+            showToast(res?.data?.message)
             setLoading(false)
             console.log('Response at handleConfirmOrder', res)
           })
           .catch(err => {
+            showToast('Error buying products from marketplace', 'error')
             setLoading(false)
             console.log('Error at handleConfirmOrder', err)
           })
       }
     } catch (error) {
+      showToast('Error buying products from marketplace', 'error')
       setLoading(false)
       console.log('Error at handleConfirmOrder', error)
     }
