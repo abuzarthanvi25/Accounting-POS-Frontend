@@ -10,6 +10,16 @@ async function getAllOrders(payload, thunkAPI) {
   }
 }
 
+async function addAnOrder(payload, thunkAPI) {
+  try {
+    const response = await ApiResource.post(ApiConstants.orders, payload)
+    return response
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error)
+  }
+}
+
 export const OrderApiServices = {
-  getAllOrders
+  getAllOrders,
+  addAnOrder
 }

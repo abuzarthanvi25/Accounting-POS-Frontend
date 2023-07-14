@@ -6,6 +6,7 @@ import MarketplaceReducer from './marketplaceReducer'
 import SupplierReducer from './supplierReducer'
 import SalesReducer from './salesReducer'
 import InvoiceReducer from './InvoiceReducer'
+import JournalReducer from './journalReducer'
 
 // Concatenate all reducers
 
@@ -16,5 +17,6 @@ export const rootReducer = combineReducers({
   marketplace: MarketplaceReducer,
   suppliers: SupplierReducer,
   sales: SalesReducer,
-  invoices: InvoiceReducer
+  invoices: InvoiceReducer,
+  journal: JournalReducer
 })

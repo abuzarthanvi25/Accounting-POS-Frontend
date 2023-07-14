@@ -10,6 +10,16 @@ async function getAllProductsInInventory(payload, thunkAPI) {
   }
 }
 
+async function addProductsToInventory(payload, thunkAPI) {
+  try {
+    const response = await ApiResource.post(ApiConstants.addProductsToInventory, payload)
+    return response
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error)
+  }
+}
+
 export const InventoryApiServices = {
-  getAllProductsInInventory
+  getAllProductsInInventory,
+  addProductsToInventory
 }

@@ -13,39 +13,6 @@ const TabAllInvoices = ({ invoices }) => {
       <form>
         <Grid container spacing={7}>
           <Grid item md={12} xs={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
-            {/* <TableCustom
-              rows={invoices && invoices.length > 0 ? invoices : []}
-              columns={[
-                {
-                  id: 'id',
-                  label: 'Sales ID'
-                },
-                {
-                  id: 'order_id',
-                  label: 'Order ID'
-                },
-                {
-                  id: 'product_id',
-                  label: 'Product ID'
-                },
-                {
-                  id: 'quantity_sold',
-                  label: 'Quantity Sold'
-                },
-                {
-                  id: 'unit_cost',
-                  label: 'Unit Cost ($)'
-                },
-                {
-                  id: 'unit_price',
-                  label: 'Unit Price ($)'
-                },
-                {
-                  id: 'date',
-                  label: 'Date Of Sale'
-                }
-              ]}
-            /> */}
             <TableCollapsible
               rows={invoices && invoices.length > 0 ? invoices : []}
               columns={[

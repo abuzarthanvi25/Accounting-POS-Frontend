@@ -15,8 +15,7 @@ import AccountOutline from 'mdi-material-ui/AccountOutline'
 import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 
 // ** Demo Tabs Imports
-import TabAllCustomers from 'src/views/customers/TabAllCustomers'
-import TabManageCustomers from 'src/views/customers/TabManageCustomers'
+import TabAllLedgerAccounts from 'src/views/ledger-accounts/TabAllLedgerAccounts'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
@@ -41,7 +40,7 @@ const TabName = styled('span')(({ theme }) => ({
 
 const Products = () => {
   // ** State
-  const [value, setValue] = useState('all-customers')
+  const [value, setValue] = useState('all-ledger-accounts')
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -56,7 +55,7 @@ const Products = () => {
           sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value='all-customers'
+            value='all-ledger-accounts'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <AccountOutline />
@@ -66,11 +65,8 @@ const Products = () => {
           />
         </TabList>
 
-        <TabPanel sx={{ p: 0 }} value='all-customers'>
-          <TabAllCustomers />
-        </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='manage-customers'>
-          <TabManageCustomers />
+        <TabPanel sx={{ p: 0 }} value='all-ledger-accounts'>
+          <TabAllLedgerAccounts />
         </TabPanel>
       </TabContext>
     </Card>

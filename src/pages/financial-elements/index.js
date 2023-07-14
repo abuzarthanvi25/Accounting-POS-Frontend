@@ -15,8 +15,8 @@ import AccountOutline from 'mdi-material-ui/AccountOutline'
 import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 
 // ** Demo Tabs Imports
-import TabAllCustomers from 'src/views/customers/TabAllCustomers'
-import TabManageCustomers from 'src/views/customers/TabManageCustomers'
+import TabAllFinancialElems from 'src/views/financial-elements/TabAllFinancialElems'
+import TabTransactionTypes from 'src/views/financial-elements/TabTransactionTypes'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
@@ -76,10 +76,10 @@ const Products = () => {
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='financial-element-types'>
-          <TabAllCustomers />
+          <TabAllFinancialElems />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='transaction-types'>
-          <TabManageCustomers />
+          <TabTransactionTypes />
         </TabPanel>
       </TabContext>
     </Card>
