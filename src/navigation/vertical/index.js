@@ -26,11 +26,6 @@ const navigation = () => {
       path: '/'
     },
     {
-      title: 'Account Settings',
-      icon: AccountCogOutline,
-      path: '/account-settings'
-    },
-    {
       sectionTitle: "Owner's Equity"
     },
     {
