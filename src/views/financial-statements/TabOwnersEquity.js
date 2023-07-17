@@ -92,6 +92,18 @@ const TabIncomeStatement = () => {
     }
   }
 
+  const handleTotalCapital = () => {
+    if (rebuildData()?.Capital && rebuildData()?.Drawings) {
+      return (
+        handleSum(rebuildData()?.Capital) +
+        ownersEquityDataLocal?.netIncome?.netIncome -
+        handleSum(rebuildData()?.Drawings)
+      )
+    } else {
+      return 0
+    }
+  }
+
   return (
     <CardContent>
       <form>
@@ -111,7 +123,12 @@ const TabIncomeStatement = () => {
                 editable={false}
                 calendarPosition='bottom-left'
               />
-              <Button disabled={loading} onClick={generateStatementOfOwnersEquity} variant='contained' color='success'>
+              <Button
+                disabled={loading || model.date_of_transaction == null}
+                onClick={generateStatementOfOwnersEquity}
+                variant='contained'
+                color='success'
+              >
                 Generate Statement Of Owner's Equity
               </Button>
             </Box>
@@ -126,6 +143,14 @@ const TabIncomeStatement = () => {
               <Typography variant='h6'>Point Of Sale Capital at the start of the year</Typography>
               <Typography variant='h6'>{rebuildData()?.Capital[0]?.amount}</Typography>
             </Box>
+            {rebuildData()
+              ?.Capital.filter((_, index) => index !== 0)
+              ?.map((capital, index) => (
+                <Box key={index} style={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
+                  <Typography variant='h6'>Re-Investments</Typography>
+                  <Typography variant='h6'>{capital?.amount}</Typography>
+                </Box>
+              ))}
             <Box style={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <Typography variant='h6'>
                 {`${ownersEquityDataLocal?.netIncome?.incomeStatus == 'Profit' ? 'Add' : 'Deduct'} `} Net Income
@@ -145,10 +170,7 @@ const TabIncomeStatement = () => {
             <Box style={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <Typography variant='h6'>Point Of Sale Capital at the end of the Year</Typography>
               <Typography style={{ borderTop: '2px solid #202020', fontWeight: 'bold' }} variant='h6'>
-                ${' '}
-                {rebuildData()?.Capital[0]?.amount +
-                  ownersEquityDataLocal?.netIncome?.netIncome -
-                  handleSum(rebuildData()?.Drawings)}
+                $ {handleTotalCapital()}
               </Typography>
             </Box>
           </Grid>

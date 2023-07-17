@@ -23,6 +23,7 @@ const TabBalanceSheet = () => {
   const { allBalanceSheetEntries } = useSelector(state => state.journal)
 
   const [balanceSheetDataLocal, setBalanceSheetDataLocal] = useState(null)
+  const [netIncome, setNetIncome] = useState(null)
   const [loading, setLoading] = useState(false)
 
   const [model, setModel] = useState({
@@ -57,8 +58,11 @@ const TabBalanceSheet = () => {
   }
 
   useEffect(() => {
-    if (allBalanceSheetEntries) {
-      setBalanceSheetDataLocal(allBalanceSheetEntries)
+    if (allBalanceSheetEntries?.entries) {
+      setBalanceSheetDataLocal(allBalanceSheetEntries?.entries)
+    }
+    if (allBalanceSheetEntries?.netIncome) {
+      setNetIncome(allBalanceSheetEntries?.netIncome)
     }
   }, [allBalanceSheetEntries])
 
@@ -116,8 +120,8 @@ const TabBalanceSheet = () => {
   }
 
   const formatLedger = () => {
-    if (allBalanceSheetEntries && allBalanceSheetEntries.length > 0) {
-      const ledgerObject = allBalanceSheetEntries.reduce((acc, entry) => {
+    if (balanceSheetDataLocal && balanceSheetDataLocal.length > 0) {
+      const ledgerObject = balanceSheetDataLocal.reduce((acc, entry) => {
         const { account_title } = entry
         if (!acc[account_title]) {
           acc[account_title] = []
@@ -137,7 +141,7 @@ const TabBalanceSheet = () => {
     const l = []
     const c = []
     Object.keys(formatLedger()).map(key => {
-      const obj = { ...formatLedger()[key][0], amount: Math.abs(handleBalance(formatLedger()[key]).balance) }
+      const obj = { ...formatLedger()[key][0], amount: handleBalance(formatLedger()[key]).balance }
       if (obj.financial_element_type_id == 1) {
         a.push(obj)
       } else if (obj.financial_element_type_id == 3) {
@@ -172,13 +176,18 @@ const TabBalanceSheet = () => {
                 editable={false}
                 calendarPosition='bottom-left'
               />
-              <Button disabled={loading} onClick={generateBalanceSheet} variant='contained' color='success'>
+              <Button
+                disabled={loading || model.date_of_transaction == null}
+                onClick={generateBalanceSheet}
+                variant='contained'
+                color='success'
+              >
                 Generate Balance Sheet
               </Button>
             </Box>
           </Grid>
 
-          {allBalanceSheetEntries && allBalanceSheetEntries.length > 0 ? (
+          {balanceSheetDataLocal && balanceSheetDataLocal.length > 0 ? (
             <>
               <Grid item md={6}>
                 <Box>
@@ -196,7 +205,7 @@ const TabBalanceSheet = () => {
                             {asset.account_title}
                           </Typography>
                           <Typography variant='body3' style={{ fontSize: '18px' }}>
-                            $ {asset.amount}
+                            $ {Math.abs(asset.amount)} {asset.amount > 0 ? 'DR' : 'CR'}
                           </Typography>
                         </Box>
                       )
@@ -236,17 +245,17 @@ const TabBalanceSheet = () => {
                     Liabilities
                   </Typography>
                   {singularize()?.Liabilities && singularize()?.Liabilities.length > 0 ? (
-                    singularize()?.Liabilities.map((asset, index) => {
+                    singularize()?.Liabilities.map((liability, index) => {
                       return (
                         <Box
                           style={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}
                           key={index}
                         >
                           <Typography variant='body3' style={{ fontSize: '18px' }}>
-                            {asset.account_title}
+                            {liability.account_title}
                           </Typography>
                           <Typography variant='body3' style={{ fontSize: '18px' }}>
-                            $ {asset.amount}
+                            $ {Math.abs(liability.amount)}
                           </Typography>
                         </Box>
                       )
@@ -287,17 +296,17 @@ const TabBalanceSheet = () => {
                     Capital
                   </Typography>
                   {singularize()?.Capital && singularize()?.Capital.length > 0 ? (
-                    singularize()?.Capital.map((asset, index) => {
+                    singularize()?.Capital.map((capital, index) => {
                       return (
                         <Box
                           style={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}
                           key={index}
                         >
                           <Typography variant='body3' style={{ fontSize: '18px' }}>
-                            {asset.account_title}
+                            {capital.account_title}
                           </Typography>
                           <Typography variant='body3' style={{ fontSize: '18px' }}>
-                            $ {asset.amount}
+                            $ {Math.abs(capital.amount)} {capital.amount > 0 ? 'DR' : 'CR'}
                           </Typography>
                         </Box>
                       )
@@ -321,13 +330,87 @@ const TabBalanceSheet = () => {
                       }}
                     >
                       <Typography variant='body3' style={{ fontSize: '18px', padding: '10px 0px' }}>
-                        Total Current Capital
+                        Total Capital
                       </Typography>
                       <Typography variant='body3' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                        $ {handleSum(singularize().Capital)}
+                        $ {Math.abs(handleSum(singularize().Capital))}
                       </Typography>
                     </Box>
                   ) : null}
+                  {netIncome ? (
+                    <>
+                      <Box
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          margin: '10px 0px',
+                          borderBottom: '2px solid #202020',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <Typography variant='body3' style={{ fontSize: '18px', padding: '10px 0px' }}>
+                          Adding Net Income
+                        </Typography>
+                        <Typography variant='body3' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                          $ {netIncome?.netIncome}
+                        </Typography>
+                      </Box>
+                      <Box
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          margin: '10px 0px',
+                          borderBottom: '2px solid #202020',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <Typography
+                          variant='body3'
+                          style={{ fontSize: '18px', padding: '10px 0px', fontWeight: 'bold' }}
+                        >
+                          Adjusted Total Capital
+                        </Typography>
+                        <Typography variant='body3' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                          $ {Math.abs(handleSum(singularize()?.Capital)) + netIncome?.netIncome}
+                        </Typography>
+                      </Box>
+                    </>
+                  ) : null}
+                </Box>
+              </Grid>
+
+              <Grid item md={12}>
+                <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <Box style={{ display: 'flex', flexDirection: 'column', margin: '0px 10px' }}>
+                    <Typography variant='h6' style={{ fontWeight: 'bolder' }}>
+                      Total Current Assets{' '}
+                    </Typography>
+                    <Typography variant='h6'>$ {handleSum(singularize()?.Assets)}</Typography>
+                  </Box>
+                  <Box style={{ display: 'flex', flexDirection: 'column', margin: '0px 10px' }}>
+                    <Typography variant='h6' style={{ fontWeight: 'bolder' }}>
+                      =
+                    </Typography>
+                    <Typography variant='h6'>=</Typography>
+                  </Box>
+                  <Box style={{ display: 'flex', flexDirection: 'column', margin: '0px 10px' }}>
+                    <Typography variant='h6' style={{ fontWeight: 'bolder' }}>
+                      Total Current Liabilities
+                    </Typography>
+                    <Typography variant='h6'>$ {handleSum(singularize()?.Liabilities)}</Typography>
+                  </Box>
+                  <Box style={{ display: 'flex', flexDirection: 'column', margin: '0px 10px' }}>
+                    <Typography variant='h6' style={{ fontWeight: 'bolder' }}>
+                      +
+                    </Typography>
+                    <Typography variant='h6'>+</Typography>
+                  </Box>
+                  <Box style={{ display: 'flex', flexDirection: 'column', margin: '0px 10px' }}>
+                    <Typography variant='h6' style={{ fontWeight: 'bolder' }}>
+                      Total Capital
+                    </Typography>
+                    <Typography variant='h6'>$ {Math.abs(handleSum(singularize()?.Capital))}</Typography>
+                  </Box>
                 </Box>
               </Grid>
             </>
