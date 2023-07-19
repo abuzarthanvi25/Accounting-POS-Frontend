@@ -122,7 +122,12 @@ const TabIncomeStatement = () => {
                 editable={false}
                 calendarPosition='bottom-left'
               />
-              <Button disabled={loading} onClick={generateIncomeStatement} variant='contained' color='success'>
+              <Button
+                disabled={loading || model.date_of_transaction == null}
+                onClick={generateIncomeStatement}
+                variant='contained'
+                color='success'
+              >
                 Generate Income Statement
               </Button>
             </Box>

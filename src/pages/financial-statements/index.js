@@ -42,7 +42,7 @@ const TabName = styled('span')(({ theme }) => ({
 
 const Products = () => {
   // ** State
-  const [value, setValue] = useState('balance-sheet')
+  const [value, setValue] = useState('income-statement')
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -56,15 +56,6 @@ const Products = () => {
           aria-label='account-settings tabs'
           sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
         >
-          <Tab
-            value='balance-sheet'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <AccountOutline />
-                <TabName>Balance Sheet</TabName>
-              </Box>
-            }
-          />
           <Tab
             value='income-statement'
             label={
@@ -83,16 +74,25 @@ const Products = () => {
               </Box>
             }
           />
+          <Tab
+            value='balance-sheet'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <AccountOutline />
+                <TabName>Balance Sheet</TabName>
+              </Box>
+            }
+          />
         </TabList>
 
-        <TabPanel sx={{ p: 0 }} value='balance-sheet'>
-          <TabBalanceSheet />
-        </TabPanel>
         <TabPanel sx={{ p: 0 }} value='income-statement'>
           <TabIncomeStatement />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='statement-of-owners-equity'>
           <TabOwnersEquity />
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value='balance-sheet'>
+          <TabBalanceSheet />
         </TabPanel>
       </TabContext>
     </Card>

@@ -13,6 +13,7 @@ let initialState = {
   allOwnersEquityEntries: null,
   financialElemTypes: null,
   transactionTypes: null,
+  netIncome: null,
   error: null,
   loading: loadingStates.idle
 }

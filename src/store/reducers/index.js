@@ -7,10 +7,12 @@ import SupplierReducer from './supplierReducer'
 import SalesReducer from './salesReducer'
 import InvoiceReducer from './InvoiceReducer'
 import JournalReducer from './journalReducer'
+import DashboardReducer from './dashboardReducer'
 
 // Concatenate all reducers
 
 export const rootReducer = combineReducers({
+  dashboard: DashboardReducer,
   customers: CustomerReducer,
   inventory: InventoryReducer,
   orders: OrdersReducer,
