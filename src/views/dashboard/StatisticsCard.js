@@ -42,8 +42,8 @@ const salesData = [
   }
 ]
 
-const renderStats = () => {
-  return salesData.map((item, index) => (
+const renderStats = (data = salesData) => {
+  return data.map((item, index) => (
     <Grid item xs={12} sm={3} key={index}>
       <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
         <Avatar
@@ -68,23 +68,15 @@ const renderStats = () => {
   ))
 }
 
-const StatisticsCard = () => {
+const StatisticsCard = ({ data }) => {
   return (
     <Card>
       <CardHeader
-        title='Statistics Card'
+        title='Point Of Sale Statistics'
         action={
           <IconButton size='small' aria-label='settings' className='card-more-options' sx={{ color: 'text.secondary' }}>
             <DotsVertical />
           </IconButton>
-        }
-        subheader={
-          <Typography variant='body2'>
-            <Box component='span' sx={{ fontWeight: 600, color: 'text.primary' }}>
-              Total 48.5% growth
-            </Box>{' '}
-            😎 this month
-          </Typography>
         }
         titleTypographyProps={{
           sx: {
@@ -96,7 +88,7 @@ const StatisticsCard = () => {
       />
       <CardContent sx={{ pt: theme => `${theme.spacing(3)} !important` }}>
         <Grid container spacing={[5, 0]}>
-          {renderStats()}
+          {renderStats(data)}
         </Grid>
       </CardContent>
     </Card>

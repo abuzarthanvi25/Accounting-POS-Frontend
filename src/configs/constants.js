@@ -14,7 +14,8 @@ const CONSTANT = {
   journalEntryByDate: '/date/journal',
   elementTypes: '/elem-types',
   transactionTypes: '/transaction-types',
-  addProductsToInventory: '/add-products/inventory'
+  addProductsToInventory: '/add-products/inventory',
+  dashboard: '/dashboard'
 }
 
 export default CONSTANT
