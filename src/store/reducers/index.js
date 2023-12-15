@@ -8,6 +8,7 @@ import SalesReducer from './salesReducer'
 import InvoiceReducer from './InvoiceReducer'
 import JournalReducer from './journalReducer'
 import DashboardReducer from './dashboardReducer'
+import AuthReducer from './authReducer'
 
 // Concatenate all reducers
 
@@ -20,5 +21,6 @@ export const rootReducer = combineReducers({
   suppliers: SupplierReducer,
   sales: SalesReducer,
   invoices: InvoiceReducer,
-  journal: JournalReducer
+  journal: JournalReducer,
+  auth: AuthReducer
 })

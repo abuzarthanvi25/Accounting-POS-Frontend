@@ -18,6 +18,8 @@ import Typography from '@mui/material/Typography'
 import CogOutline from 'mdi-material-ui/CogOutline'
 import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
+import { useDispatch } from 'react-redux'
+import { logoutUserRequest } from 'src/store/reducers/authReducer'
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -34,6 +36,7 @@ const UserDropdown = () => {
 
   // ** Hooks
   const router = useRouter()
+  const dispatch = useDispatch();
 
   const handleDropdownOpen = event => {
     setAnchorEl(event.currentTarget)
@@ -44,6 +47,14 @@ const UserDropdown = () => {
       router.push(url)
     }
     setAnchorEl(null)
+  }
+
+  const handleLogout = () => {
+    try {
+      dispatch(logoutUserRequest()).then(() => router.push("/pages/login"));
+    } catch (error) {
+      console.log('Error at handleLogout', error);
+    }
   }
 
   const styles = {
@@ -116,7 +127,7 @@ const UserDropdown = () => {
           </Box>
         </MenuItem>
         <Divider />
-        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
+        <MenuItem sx={{ py: 2 }} onClick={() => handleLogout()}>
           <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
           Logout
         </MenuItem>

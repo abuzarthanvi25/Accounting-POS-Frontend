@@ -15,7 +15,9 @@ const CONSTANT = {
   elementTypes: '/elem-types',
   transactionTypes: '/transaction-types',
   addProductsToInventory: '/add-products/inventory',
-  dashboard: '/dashboard'
+  dashboard: '/dashboard',
+  login: '/login',
+  signUp: '/signup'
 }
 
 export default CONSTANT

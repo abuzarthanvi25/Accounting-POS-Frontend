@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, Fragment } from 'react'
+import { useState } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -7,8 +7,6 @@ import Link from 'next/link'
 // ** MUI Components
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
-import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import InputLabel from '@mui/material/InputLabel'
@@ -19,13 +17,6 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import { styled, useTheme } from '@mui/material/styles'
 import MuiCard from '@mui/material/Card'
 import InputAdornment from '@mui/material/InputAdornment'
-import MuiFormControlLabel from '@mui/material/FormControlLabel'
-
-// ** Icons Imports
-import Google from 'mdi-material-ui/Google'
-import Github from 'mdi-material-ui/Github'
-import Twitter from 'mdi-material-ui/Twitter'
-import Facebook from 'mdi-material-ui/Facebook'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 
@@ -38,6 +29,16 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+import { FormHelperText } from '@mui/material'
+import { showFaliureToast, showSuccessToast } from 'src/configs/appToast'
+import { useRouter } from 'next/router'
+import { registerUserRequest } from 'src/store/reducers/authReducer'
+import { unwrapResult } from '@reduxjs/toolkit'
+import { useDispatch } from 'react-redux'
+
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
@@ -49,36 +50,53 @@ const LinkStyled = styled('a')(({ theme }) => ({
   color: theme.palette.primary.main
 }))
 
-const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
-  marginTop: theme.spacing(1.5),
-  marginBottom: theme.spacing(4),
-  '& .MuiFormControlLabel-label': {
-    fontSize: '0.875rem',
-    color: theme.palette.text.secondary
-  }
-}))
-
 const RegisterPage = () => {
   // ** States
   const [values, setValues] = useState({
-    password: '',
     showPassword: false
   })
 
   // ** Hook
   const theme = useTheme()
-
-  const handleChange = prop => event => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
+  const router = useRouter()
+  const dispatch = useDispatch()
 
   const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword })
+    setValues({ showPassword: !values.showPassword })
   }
 
   const handleMouseDownPassword = event => {
     event.preventDefault()
   }
+
+  const validationSchema = Yup.object({
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    password: Yup.string().required('Password is required'),
+    userName: Yup.string().required('Username is required')
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+      userName: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      // Handle form submission here, e.g., call your login function with values.email and values.password
+      console.log('Form submitted:', values);
+      const { email, password, userName } = values;
+
+      if(email && password && userName){
+        dispatch(registerUserRequest({ email, password, userName })).then(unwrapResult).then((response) => {
+            showSuccessToast(response?.data?.message);
+            router.push("/pages/login")
+        }).catch((error) => {
+            showFaliureToast(error?.response?.data?.message)
+        })
+      }
+    },
+  });
 
   return (
     <Box className='content-center'>
@@ -161,18 +179,32 @@ const RegisterPage = () => {
             <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
               Adventure starts here 🚀
             </Typography>
-            <Typography variant='body2'>Make your app management easy and fun!</Typography>
+            <Typography variant='body2'>Make your sale management easy and fun!</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='username' label='Username' sx={{ marginBottom: 4 }} />
-            <TextField fullWidth type='email' label='Email' sx={{ marginBottom: 4 }} />
-            <FormControl fullWidth>
+          <form noValidate autoComplete='off' onSubmit={e => {
+            e.preventDefault();
+            formik.handleSubmit();
+          }}>
+            <FormControl sx={{ marginBottom: 4 }} fullWidth>
+              <TextField autoFocus fullWidth id='userName' label='Username' name='userName' onChange={formik.handleChange}  />
+              {formik.touched.userName && Boolean(formik.errors.userName) && (
+                <FormHelperText error>{formik.errors.userName}</FormHelperText>
+              )}
+            </FormControl>
+            <FormControl sx={{ marginBottom: 4 }} fullWidth>
+              <TextField fullWidth type='email' label='Email' id='email' name="email" value={formik.values.email} onChange={formik.handleChange} />
+              {formik.touched.email && Boolean(formik.errors.email) && (
+                <FormHelperText error>{formik.errors.email}</FormHelperText>
+              )}
+            </FormControl>
+            <FormControl sx={{ marginBottom: 4 }} fullWidth>
               <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
               <OutlinedInput
                 label='Password'
-                value={values.password}
-                id='auth-register-password'
-                onChange={handleChange('password')}
+                value={formik.values.password}
+                id='auth-login-password'
+                name="password"
+                onChange={formik.handleChange}
                 type={values.showPassword ? 'text' : 'password'}
                 endAdornment={
                   <InputAdornment position='end'>
@@ -187,19 +219,11 @@ const RegisterPage = () => {
                   </InputAdornment>
                 }
               />
+              {formik.touched.password && Boolean(formik.errors.password) && (
+                <FormHelperText error>{formik.errors.password}</FormHelperText>
+              )}
             </FormControl>
-            <FormControlLabel
-              control={<Checkbox />}
-              label={
-                <Fragment>
-                  <span>I agree to </span>
-                  <Link href='/' passHref>
-                    <LinkStyled onClick={e => e.preventDefault()}>privacy policy & terms</LinkStyled>
-                  </Link>
-                </Fragment>
-              }
-            />
-            <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }}>
+            <Button disabled={formik.errors.email || formik.errors.password || formik.errors.userName ? true : false} fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }}>
               Sign up
             </Button>
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -211,31 +235,6 @@ const RegisterPage = () => {
                   <LinkStyled>Sign in instead</LinkStyled>
                 </Link>
               </Typography>
-            </Box>
-            <Divider sx={{ my: 5 }}>or</Divider>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Facebook sx={{ color: '#497ce2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Twitter sx={{ color: '#1da1f2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Github
-                    sx={{ color: theme => (theme.palette.mode === 'light' ? '#272727' : theme.palette.grey[300]) }}
-                  />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Google sx={{ color: '#db4437' }} />
-                </IconButton>
-              </Link>
             </Box>
           </form>
         </CardContent>

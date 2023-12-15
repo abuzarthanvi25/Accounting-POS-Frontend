@@ -1,6 +1,6 @@
 // ** Next Imports
 import Head from 'next/head'
-import { Router } from 'next/router'
+import { Router, useRouter } from 'next/router'
 
 // ** Loader Import
 import NProgress from 'nprogress'
@@ -33,6 +33,9 @@ import { Provider } from 'react-redux'
 // ** Import Store Instance
 import configureStores from '../store/index'
 import Toast from 'src/custom-components/Toast'
+
+// ** Authentication provider
+import { AuthProvider } from '../utils/authentication/auth-provider';
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -73,8 +76,10 @@ const App = props => {
                 <ThemeComponent settings={settings}>
                   {getLayout(
                     <>
-                      <Component {...pageProps} />
-                      <Toast />
+                      <AuthProvider>
+                        <Component {...pageProps} />
+                        <Toast />
+                      </AuthProvider>
                     </>
                   )}
                 </ThemeComponent>

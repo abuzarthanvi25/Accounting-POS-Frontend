@@ -8,8 +8,6 @@ import { useRouter } from 'next/router'
 // ** MUI Components
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
-import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import InputLabel from '@mui/material/InputLabel'
 import Typography from '@mui/material/Typography'
@@ -20,13 +18,6 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import { styled, useTheme } from '@mui/material/styles'
 import MuiCard from '@mui/material/Card'
 import InputAdornment from '@mui/material/InputAdornment'
-import MuiFormControlLabel from '@mui/material/FormControlLabel'
-
-// ** Icons Imports
-import Google from 'mdi-material-ui/Google'
-import Github from 'mdi-material-ui/Github'
-import Twitter from 'mdi-material-ui/Twitter'
-import Facebook from 'mdi-material-ui/Facebook'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 
@@ -39,6 +30,19 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { FormHelperText } from '@mui/material'
+import { showFaliureToast, showSuccessToast } from 'src/configs/appToast'
+import { loginUserRequest } from 'src/store/reducers/authReducer'
+import { useDispatch } from 'react-redux'
+import { unwrapResult } from '@reduxjs/toolkit'
+
+const validationSchema = Yup.object({
+  email: Yup.string().email('Invalid email address').required('Email is required'),
+  password: Yup.string().required('Password is required'),
+});
+
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
@@ -50,35 +54,46 @@ const LinkStyled = styled('a')(({ theme }) => ({
   color: theme.palette.primary.main
 }))
 
-const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
-  '& .MuiFormControlLabel-label': {
-    fontSize: '0.875rem',
-    color: theme.palette.text.secondary
-  }
-}))
 
 const LoginPage = () => {
   // ** State
   const [values, setValues] = useState({
-    password: '',
     showPassword: false
   })
 
   // ** Hook
   const theme = useTheme()
   const router = useRouter()
-
-  const handleChange = prop => event => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
+  const dispatch = useDispatch();
 
   const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword })
+    setValues({showPassword: !values.showPassword})
   }
 
   const handleMouseDownPassword = event => {
     event.preventDefault()
   }
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+      showPassword: false
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      // Handle form submission here, e.g., call your login function with values.email and values.password
+      console.log('Form submitted:', values);
+      const {email, password} = values;
+      if(typeof email == 'string' && typeof password == 'string'){
+        dispatch(loginUserRequest({ email, password })).then(unwrapResult).then((response) => {
+            showSuccessToast(response?.data?.message)
+        }).catch((error) => {
+            showFaliureToast(error?.response?.data?.message)
+        })
+    }
+    },
+  });
 
   return (
     <Box className='content-center'>
@@ -163,15 +178,24 @@ const LoginPage = () => {
             </Typography>
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+          <form noValidate autoComplete='off' onSubmit={e => {
+            e.preventDefault();
+            formik.handleSubmit();
+          }}>
+            <FormControl sx={{marginBottom:4}} fullWidth>
+            <TextField autoFocus fullWidth id='email' name="email" value={formik.values.email} onChange={formik.handleChange} label='Email' />
+            {formik.touched.email && Boolean(formik.errors.email) && (
+                <FormHelperText error>{formik.errors.email}</FormHelperText>
+              )}
+            </FormControl>
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
                 label='Password'
-                value={values.password}
+                value={formik.values.password}
                 id='auth-login-password'
-                onChange={handleChange('password')}
+                name="password"
+                onChange={formik.handleChange}
                 type={values.showPassword ? 'text' : 'password'}
                 endAdornment={
                   <InputAdornment position='end'>
@@ -186,21 +210,17 @@ const LoginPage = () => {
                   </InputAdornment>
                 }
               />
+              {formik.touched.password && Boolean(formik.errors.password) && (
+                <FormHelperText error>{formik.errors.password}</FormHelperText>
+              )}
             </FormControl>
-            <Box
-              sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
-            >
-              <FormControlLabel control={<Checkbox />} label='Remember Me' />
-              <Link passHref href='/'>
-                <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
-              </Link>
-            </Box>
             <Button
               fullWidth
               size='large'
               variant='contained'
-              sx={{ marginBottom: 7 }}
-              onClick={() => router.push('/')}
+              sx={{ marginBottom: 7, marginTop: 7 }}
+              type="submit"
+              disabled={formik.errors.email || formik.errors.password ? true : false}
             >
               Login
             </Button>
@@ -213,31 +233,6 @@ const LoginPage = () => {
                   <LinkStyled>Create an account</LinkStyled>
                 </Link>
               </Typography>
-            </Box>
-            <Divider sx={{ my: 5 }}>or</Divider>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Facebook sx={{ color: '#497ce2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Twitter sx={{ color: '#1da1f2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Github
-                    sx={{ color: theme => (theme.palette.mode === 'light' ? '#272727' : theme.palette.grey[300]) }}
-                  />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Google sx={{ color: '#db4437' }} />
-                </IconButton>
-              </Link>
             </Box>
           </form>
         </CardContent>
