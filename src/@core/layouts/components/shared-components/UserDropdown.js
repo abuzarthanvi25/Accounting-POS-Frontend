@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, Fragment } from 'react'
+import { useState, Fragment, useEffect } from 'react'
 
 // ** Next Import
 import { useRouter } from 'next/router'
@@ -18,7 +18,7 @@ import Typography from '@mui/material/Typography'
 import CogOutline from 'mdi-material-ui/CogOutline'
 import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { logoutUserRequest } from 'src/store/reducers/authReducer'
 
 // ** Styled Components
@@ -36,7 +36,15 @@ const UserDropdown = () => {
 
   // ** Hooks
   const router = useRouter()
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+  const { user } = useSelector(state => state.auth)
+  const [userDetailsLocal, setUserDetailsLocal] = useState(null)
+
+  useEffect(() => {
+    if (user) {
+      setUserDetailsLocal(user)
+    }
+  }, [user])
 
   const handleDropdownOpen = event => {
     setAnchorEl(event.currentTarget)
@@ -51,9 +59,9 @@ const UserDropdown = () => {
 
   const handleLogout = () => {
     try {
-      dispatch(logoutUserRequest()).then(() => router.push("/pages/login"));
+      dispatch(logoutUserRequest()).then(() => router.push('/pages/login'))
     } catch (error) {
-      console.log('Error at handleLogout', error);
+      console.log('Error at handleLogout', error)
     }
   }
 
@@ -105,27 +113,13 @@ const UserDropdown = () => {
               <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
             </Badge>
             <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 600 }}>Kachra Seth</Typography>
+              <Typography sx={{ fontWeight: 600 }}>{userDetailsLocal?.user_name ?? 'Kachra Seth'}</Typography>
               <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
                 Admin
               </Typography>
             </Box>
           </Box>
         </Box>
-        <Divider sx={{ mt: 0, mb: 1 }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <AccountOutline sx={{ marginRight: 2 }} />
-            Profile
-          </Box>
-        </MenuItem>
-        <Divider />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <CogOutline sx={{ marginRight: 2 }} />
-            Settings
-          </Box>
-        </MenuItem>
         <Divider />
         <MenuItem sx={{ py: 2 }} onClick={() => handleLogout()}>
           <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
